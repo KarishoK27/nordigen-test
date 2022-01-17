@@ -1,1 +1,4 @@
 Django==4.0.1
+django-environ==0.8.1
+requests==2.27.1
+celery[redis]==5.2.3

@@ -1,0 +1,58 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bank account</title>
+
+    <!-- CSS -->
+    <link href="{% static 'css/main.css' %}" rel="stylesheet" />
+
+    <!-- Vue.js -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14"></script>
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+
+</head>
+
+<body>
+    <div class="header">
+        <a href="/">
+            <img src="https://cdn.nordigen.com/ais/Nordigen_Logo_Black.svg" class="logo">
+        </a>
+    </div>
+
+    <div class="content">
+        <div id="accounts">
+            <div class="accounts-list">
+                <div v-for="(account, index) in accounts" class="accounts-item" :id="account.account" v-on:click="getAccount(account.account)">
+                    <div class="name">Account [[ index + 1 ]]</div>
+                    <div v-if="account.transactions" class="transactions">
+                        <div v-for="pending in account.transactions.pending" class="transaction-item pending">
+                            <span class="date">[[ pending.valueDate ]]</span>
+                            <span class="info">[[ pending.remittanceInformationUnstructured]]</span>
+                            <span class="amount">[[ pending.transactionAmount.amount ]] [[ pending.transactionAmount.currency ]]</span> 
+                        </div>
+                        <div v-for="booked in account.transactions.booked"class="transaction-item booked">
+                            <span class="date">[[ booked.valueDate ]]</span>
+                            <span class="info">[[ booked.remittanceInformationUnstructured]]</span>
+                            <span class="amount">[[ booked.transactionAmount.amount ]] [[ booked.transactionAmount.currency ]]</span> 
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+{{ accounts|json_script:"accounts_list" }}
+<script>
+    const csrf_token = "{{ csrf_token }}"
+    const api_get_account_transactions_url = "{% url 'api_get_account_transactions' %}"
+    
+</script>
+<script src="{% static 'js/accounts.js' %}"></script>
+
+</html>

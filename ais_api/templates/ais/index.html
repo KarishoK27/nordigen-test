@@ -1,0 +1,50 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AIS API</title>
+
+    <!-- CSS -->
+    <link href="{% static 'css/main.css' %}" rel="stylesheet" />
+
+    <!-- Vue.js -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14"></script>
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <div class="header">
+        <img src="https://cdn.nordigen.com/ais/Nordigen_Logo_Black.svg" class="logo">
+        <select id="country-select" onchange="appInstitutions.getInstitutions()">
+            {% for country in countries %}
+            <option value="{{country}}" {% if country == 'LV' %} selected {% endif %}>{{ country }}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div class="content">
+        <div id="institutions">
+            <h1>Select your bank:</h1>
+            <div class="institutions-list">
+                <div v-for="institution in institutions" class="institution-item" id="institution.id" v-on:click="selectBank(institution)">
+                    <img :src="institution.logo" class="logo">
+                    <span class="name">[[ institution.name ]]</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+    const csrf_token = "{{ csrf_token }}"
+    const api_get_institutions_url = "{% url 'api_get_institutions' %}"
+    const api_create_agreement_url = "{% url 'api_create_agreement' %}"
+    
+</script>
+<script src="{% static 'js/institutions.js' %}"></script>
+
+</html>
